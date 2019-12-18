@@ -1,0 +1,42 @@
+{% load myfilters %}
+
+
+{% csrf_token %}
+<input type="hidden" name="next" value="{{ request.GET.next }}{{ request.POST.next }}">
+
+{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
+
+
+{% if form.errors %}
+{#    Общие ошибки формы#}
+    {% for key, value in form.errors.items %}
+        {% if key == '__all__' %}<p class="bg-danger text-left" style="padding: 15px;">{{ value|striptags }}</p>{% endif %}
+    {% endfor %}
+{% endif %}
+
+{% for field in form.visible_fields %}
+    {% if mode == 'horizontal' %}
+        {#  Используйте  class="form-horizontal" #}
+        <div class="form-group{% if field.errors %} has-error{% endif %}">
+            <label class="{{ label_size|default:'col-sm-2' }} control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="{{ input_size|default:'col-sm-10' }}">
+                {{ field|field_with_label:'form-control' }}
+                {% for error in field.errors %}<span class="help-block text-left">{{ error|striptags }}</span>{% endfor %}
+            </div>
+        </div>
+    {% elif mode == 'vertical' %}
+        <div class="form-group{% if field.errors %} has-error{% endif %}">
+            <label for="id_{{ field.name }}">{{ field.label }}</label>
+            {{ field|field_with_label:'form-control' }}
+            {% for error in field.errors %}<span class="help-block text-left">{{ error|striptags }}</span>{% endfor %}
+        </div>
+    {% else %}
+        {#Без label's#}
+        <div class="form-group{% if field.errors %} has-error{% endif %}">
+            {{ field|field_without_label:'form-control' }}
+            {% for error in field.errors %}<span class="help-block text-left">{{ error|striptags }}</span>{% endfor %}
+        </div>
+    {% endif %}
+{% endfor %}

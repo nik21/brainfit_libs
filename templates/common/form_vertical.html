@@ -1,0 +1,7 @@
+<form accept-charset="UTF-8" role="form" method="post" enctype="multipart/form-data" >
+    <fieldset>
+        {% include 'common/form_fields.html' with mode='vertical' %}
+
+        <input class="btn btn-success btn-block btn-leplants" type="submit" onclick="this.disabled=true;this.form.submit();" value="{{ submit }}">
+    </fieldset>
+</form>

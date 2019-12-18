@@ -1,0 +1,12 @@
+{% load myfilters %}
+
+{% if form.errors %}
+    <div class="alert-danger alert">
+       <button type="button" class="close" data-dismiss="alert">×</button>
+
+        <h2 style="margin-top: 0">Ошибка</h2>
+        {% for key, value in form.errors.items %}
+            <p>{% if key != '__all__' %}<strong>{% real_filed_name form key %}:</strong> {% endif %}{{ value|striptags }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
